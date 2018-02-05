@@ -79,3 +79,8 @@ select nombre,insc.deporte,ina.fecha
   on insc.documento=ina.documento and
   insc.deporte=ina.deporte
   order by nombre, insc.deporte;
+
+
+--INTO ES PARA ASIGNAR LA CAPTURA EN ESA VARIABLE
+--EN ESTE CASO X 
+  select min(price) INTO X FROM "TABLA"

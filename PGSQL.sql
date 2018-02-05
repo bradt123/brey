@@ -41,6 +41,12 @@ alter table nombre_table alter column nombre_columna set default 125;
 
 alter table books drop column code;
 
+--rellenar toda la columna de 
+--manera randomica: en este caso para la columna fecha
+--alter table item add column fecha date;
+
+update "tabla" set fecha = current_date - round((10 * random()))::INTEGER;
+
 --para actualizar o modifcar datos
 
 update books set name = 'nuevo valor' where code = 'condicion';
