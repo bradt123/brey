@@ -46,6 +46,8 @@ alter table books drop column code;
 --alter table item add column fecha date;
 
 update "tabla" set fecha = current_date - round((10 * random()))::INTEGER;
+--o para datos numericos;
+update books set quantity = round((10*random()))::INTEGER;
 
 --para actualizar o modifcar datos
 
@@ -277,6 +279,18 @@ select * from medicamentos
   where laboratorio='Bayer' and
   not cantidad=100;
 
+--BETWEEN lo halla en el rango usando "and"
+select * from table
+where price between 20 and 40;
+o---que no este en ese rango
+where price not between 20 and 35;
+
+---IN para averiguar si el valor de un campo esta ena lista
+--- de valores espesificada
+select * from tabla
+where author in ('Borges','Paenza');
+o---que no este en la lista
+where author not in ('Borges','Paenza');
 
 SENTENCIA HAVING
 
