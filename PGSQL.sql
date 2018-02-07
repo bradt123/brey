@@ -12,6 +12,10 @@ ALTER USER usertochange WITH password 'new_passwd';
 
 alter table books rename column cod to code;
 
+--para cambiar el nombre de la tabla
+
+alter table "nombre_tabla_a_cambiar" rename to "nombre_nuevo"; 
+
 --para agregar columna
 
 alter table books add column code serial not null primary key; o 
@@ -70,6 +74,13 @@ alter table "tabla" drop column "nombre_columna";
 
 --para decir que la columna es clave primaria
 alter table "tabla" add constraint "pk_nombre_codigo" primary key("columna");
+
+ejemplo para dos claves primarias y que la clave serial no sea 
+clave primaria solo serial
+
+alter table pa.tmovil add
+CONSTRAINT pk_codigo
+primary key(placa,horallegada);
 
 --Elimine todos los registros o datos (pero si ingresamos otros datos continua los codigos)
 

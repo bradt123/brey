@@ -175,3 +175,19 @@ $$
 LANGUAGE 'plpgsql';
 
 select * from retorna('i');
+
+
+
+/*****FUNCION PARA SABER SI ES MAYUSCULA O MINUSCULA***/
+CREATE OR REPLACE FUNCTION mami(nom char)
+returns char as 
+$$
+BEGIN
+ IF(lower($1) = $1)THEN
+   RAISE EXCEPTION 'MAYUSCULA';
+ ELSIF(upper($1) = $1) THEN
+   RAISE EXCEPTION 'minuscula';
+ END IF;
+END;
+$$
+LANGUAGE 'plpgsql';

@@ -1,3 +1,9 @@
+PARA AGREGAR O LLAMAR A LA TABLA PERSONA SE TIENE QUE AUMENTAR EL "id_persona"
+PARA PODDER USARLO, SE PUEDE AGREGAR AL CREAR LA TABLA
+O SE TIENE QUE AUMENTAR EL CAMPO EN LA TABLA YA CREADA
+Y AUMENTAREN LAS FUNCIONES SEL,IME PARA PODER SER USADA
+EL ORDEN DE LA FUNCION "IME", TIENE QUE CONCORDAR CON EL DE "SEL",
+como el archivo 
 agregado en el archivo orga.ft_tipo_parentesco_sel
 
 cat.nombre as desc_tipo_parentesco,
@@ -39,7 +45,14 @@ AUMENTADO DE IGUAL MANERA
 
 AUMENTADO EN EL ARCHIVO DEL MODELO
 EN LA FUNCIION "listarParentesco" O "lista'nombre'"
+
+$this->captura('id_persona','int4');  /*aumentar si no la tubiera*/
+
 $this->captura('desc_person','text');
+
+/*se aumenta tambien si no huboiera en las funciones 
+insertar y modificar*/
+$this->setParametro('id_persona','id_persona','int4');
 
 
 
@@ -78,13 +91,3 @@ sel archivo  orga.ft_tipo_parentesco_sel
 
 
 
-	si te sale este error por ramas 
-	! [rejected]        master -> master (non-fast-forward)
-error: failed to push some refs to 'git@github.com:asantoya/projectnewbies.git'
-To prevent you from losing history, non-fast-forward updates were rejected
-Merge the remote changes (e.g. 'git pull') before pushing again.  See the
-'Note about fast-forwards' section of 'git push --help' for details.
- 
-
- cambiarce primero a la rama master
- luego hacer un git pull  
