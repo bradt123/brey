@@ -39,7 +39,15 @@ alter table nombre_table alter column nombre_columna set default 125;
 
 --para eliminar columna
 
-alter table books drop column code;
+alter table books drop column code; 
+
+--para gregar reglas al llenar los registros
+alter table "table" add constraint "nombre_de_regla"
+check  "condicion";
+
+alter table books add constraint regla check (price>=0);
+--para boorrar restricciones
+alter table "tabla" drop constraint "nombre_de_regla"
 
 --rellenar toda la columna de 
 --manera randomica: en este caso para la columna fecha
@@ -57,6 +65,12 @@ update books set name = 'nuevo valor' where code = 'condicion';
 
 delete from peliculas where duracion=120;
 
+--para eliminar una columna
+alter table "tabla" drop column "nombre_columna";
+
+--para decir que la columna es clave primaria
+alter table "tabla" add constraint "pk_nombre_codigo" primary key("columna");
+
 --Elimine todos los registros o datos (pero si ingresamos otros datos continua los codigos)
 
 delete from medicines;
@@ -69,10 +83,13 @@ truncate table medicines;
 
 drop table medicines;
 
---para duplicar table con todo sus restricciones
+--para crear o duplicar table con todo sus restricciones
 
 create table la_nueva(like la_otra including defaults INCLUDING CONSTRAINTS
 including INDEXES);
+
+o para copiar solamente
+create table la_nueva(like la_otra);
 
 --para insertar los datos de la tabla a la nueva tabla
 
