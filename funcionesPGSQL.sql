@@ -1,3 +1,9 @@
+para elimimar funcciones
+drop function "nombre_funcion('los parametros')"
+
+ejemplo
+DROP FUNCTION public.mami(nom char);
+/*******************************************/
 ESTRUCTURA DE FUNCION
 CREATE OR REPLACE FUNCTION nombrefuncion(parametros)
 RETURNS tipo AS $$
@@ -189,5 +195,24 @@ BEGIN
    RAISE EXCEPTION 'minuscula';
  END IF;
 END;
+$$
+LANGUAGE 'plpgsql';
+
+/*****TERMINADO*/
+create or replace function mami(nom varchar)
+returns varchar as 
+$$
+declare
+ res varchar; 
+begin 
+  if(upper($1) = $1)THEN
+     res := lower($1);
+   --raise EXCEPTION 'minuscula';
+  ELSE
+    res := $1;
+  end if;
+  return res;
+  
+end;
 $$
 LANGUAGE 'plpgsql';
