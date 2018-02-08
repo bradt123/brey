@@ -1,4 +1,6 @@
 
+\df para ver las funciones creadas
+
 funcion para saber si es mayscula o minuscula
 
 var a= function(e){

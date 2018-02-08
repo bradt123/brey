@@ -322,3 +322,29 @@ where author not in ('Borges','Paenza');
 
 SENTENCIA HAVING
 
+
+/*********************/
+/*select into define una nueva tabla de los resultados 
+de la consulta inmportante;*/
+
+SELECT "campos de solicitud" INTO  "nombre_nuevo_tabla" 
+FROM "tabla_a_consultar"
+WHERE "consulta";
+
+select * into  nuevatabla 
+from libros
+where precio > 10;
+
+ooo
+para functiones
+n :=0; 
+--select into guarda en n el valor de la consulta
+--en este caso el salario se guarda en n;
+select into n salario from empleado
+where apellido = ape;
+
+--(AHORA PODEMOS CONSULTAR A AL TABLA 
+nuevatabla con select * from nuevatabla;)
+
+/******************************************/
+
