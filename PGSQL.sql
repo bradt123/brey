@@ -25,6 +25,16 @@ alter table books add column name varchar(20);
 
 alter table nombre_table alter column nombre_columna set not null
 
+--unique
+alter table NOMBRETABLA
+ add constraint NOMBRERESTRICCION
+ unique (CAMPO);
+
+ ejemplo
+  alter table alumnos
+  add constraint UQ_alumnos_documento
+  unique (documento);
+  
 --Modificar el tipo de dato a una columna
 
 alter table nombre_table alter column nombre_columna type smallint;
@@ -62,6 +72,10 @@ alter table "table" add constraint "nombre_de_regla"
 check  "condicion";
 
 alter table books add constraint regla check (price>=0);
+
+o al agregar el campo
+sexo char(1) check(sexo in ('M','F')) --solo aceptara M o F nada mas
+
 --para boorrar restricciones
 alter table "tabla" drop constraint "nombre_de_regla"
 
