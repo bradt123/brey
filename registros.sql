@@ -185,3 +185,74 @@ select * from "nombre_vista";
    join secciones as s
    on codigo=seccion;
 --para eliminar vista DROP VIEW "nombre_vista";
+
+
+/**********************************************/
+--restriccion foreign key en la misma tabla
+--recursivo
+ create table afiliados(
+  numero serial,
+  documento char(8) not null,
+  nombre varchar(30),
+  afiliadotitular int,
+  primary key (documento),
+  unique (numero)
+ );
+  alter table afiliados
+  add constraint FK_afiliados_afiliadotitular
+  foreign key (afiliadotitular)
+  references afiliados (numero);
+
+/**************************************************/
+--Agregar foreign key al crear la tabla
+
+create table editoriales(
+  codigo serial,
+  nombre varchar(20),
+  primary key (codigo)
+ );
+
+ create table libros(
+  codigo serial,
+  titulo varchar(40),
+  autor varchar(30),
+  codigoeditorial smallint references editoriales(codigo), --asi
+  primary key(codigo)
+ );
+ /**************************************************/
+ --foreign key con acciones 
+ --acciones (
+ 1.- no action =  si intentamos eliminar o actualizar un valor
+      de la clave primaria de la tabla referenciada (TABLA2) 
+      que tengan referencia en la tabla principal (TABLA1), 
+      se genere un error y la acción no se realice; es la opción predeterminada
+
+ 2.- cascade = indica que si eliminamos o actualizamos un valor de la clave primaria
+      en la tabla referenciada (TABLA2), los registros coincidentes en la tabla principal 
+      (TABLA1), también se eliminen o modifiquen; es decir, si eliminamos o modificamos 
+      un valor de campo definido con una restricción "primary key" o "unique", dicho cambio
+      se extiende al valor de clave externa de la otra tabla (integridad referencial en cascada).
+ 3.- set null = Establece con el valor null en el campo de la clave foránea.
+
+ 4.- set default =  Establece el valor por defecto en el campo de la clave foránea.
+ --)
+
+ create table libros(
+  codigo serial,
+  titulo varchar(40),
+  autor varchar(30),
+  codigoeditorial smallint,
+  primary key(codigo)
+ );
+ create table editoriales(
+  codigo serial,
+  nombre varchar(20),
+  primary key (codigo)
+ );
+
+  alter table libros
+ add constraint FK_libros_codigoeditorial
+  foreign key (codigoeditorial)
+  references editoriales(codigo)
+  on update cascade
+  on delete cascade;

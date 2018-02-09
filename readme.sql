@@ -152,4 +152,9 @@ select c1.nombre || ' + '||c2.nombre as combinacion,
 c1.precio + c2.precio as total
 from snack as c1
 cross join snack c2
-where c1.tipo = 'cafe' and c2.tipo ='masita;
+where c1.tipo = 'cafe' and c2.tipo ='masita';
+
+/***********************************************************/
+
+
+

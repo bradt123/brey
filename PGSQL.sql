@@ -29,17 +29,29 @@ alter table nombre_table alter column nombre_columna set not null
 
 alter table nombre_table alter column nombre_columna type smallint;
 
---agregar una foreign-key
+--agregar una foreign-key 
+/*IMPORTANTE PARA QUE NO SE AGREGE DATOS REPETIDOS CON OTRAS TABLAS*/
+alter table NOMBRETABLA1
+  add constraint NOMBRERESTRICCION
+  foreign key (CAMPOCLAVEFORANEA)
+  references NOMBRETABLA2 (CAMPOCLAVEPRIMARIA);
+  
+alter table "nombre_primera_tabla" add  constraint "fk_codigo_nombredecodigo"
+foreign key("nombre_columna_primera_tabla")
+ references "nombre_tabla_de_relacion"("nombre_columna_de_tabla_relacionar");
 
-alter table nombre_table add foreign key(nombre_columna) references nomina(nombre_columna)
+ ejemplo
+
+alter table libros add constraint "fk_codigo_codigoeditorial"
+foreign key (codigoeditorial) references editorial(codigo)
 
 --eliminar el valor que tiene por default una columna
 
-alter table nombre_table alter column nombre_columna drop default;
+alter table "nombre_tabla" alter column "nombre_columna" drop default;
 
 --Agregar un valor por default a una columna
 
-alter table nombre_table alter column nombre_columna set default 125;
+alter table "nombre_table" alter column "nombre_columna" set default 125;
 
 --para eliminar columna
 
