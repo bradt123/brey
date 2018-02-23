@@ -374,3 +374,113 @@ nuevatabla con select * from nuevatabla;)
 
 /******************************************/
 
+operador like
+/*ILIKE PostgreSQL proporciona el operador
+ILIKE que actúa como el operador LIKE. 
+Además, el operador ILIKE coincide con el valor
+sin distinción de mayúsculas y minúsculas. Vea el siguiente ejemplo*/
+SELECT
+ first_name,
+ last_name
+FROM
+ customer
+WHERE
+ first_name ILIKE 'BAR%';
+
+
+
+/*CAST 
+permite cambiar el tipo de dato en otro
+*/
+CAST (expresion as type);
+
+--Ejemplo combierte a typo numerico
+select
+CAST ('100' as INTEGER);
+
+select
+CAST('10c' as INTEGER);  --no pude cambiarce el 
+
+select 
+CAST('2015-01-01' as DATE);
+
+SELECT
+ CAST ('01-OCT-2015' AS DATE); 
+
+/*debe usar DOBLE PRECISIÓN en lugar 
+de DOBLE de la siguiente manera;*/
+
+SELECT
+ CAST ('10.2' AS DOUBLE PRECISION);
+/*
+PostgreSQL type cast :: specific 
+Además de la sintaxis typeCAST, 
+puede usar la siguiente sintaxis 
+para convertir un tipo en otro:
+*/
+expression::type
+
+SELECT
+ '100'::INTEGER;
+ 
+SELECT
+ '01-OCT-2015'::DATE;
+
+ /*
+ La expresión CASE de PostgreSQL es la misma
+que la declaración IF / ELSE en otros lenguajes de programación. 
+PostgreSQL proporciona dos formas de la expresión CASE.
+Lo siguiente ilustra la forma general de la declaración CASE:
+*/
+
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+SELECT
+ SUM (
+ CASE
+ WHEN rental_rate = 0.99 THEN
+ 1
+ ELSE
+ 0
+ END
+ ) AS "Mass",
+ SUM (
+ CASE
+ WHEN rental_rate = 2.99 THEN
+ 1
+ ELSE
+ 0
+ END
+ ) AS "Economic",
+ SUM (
+ CASE
+ WHEN rental_rate = 4.99 THEN
+ 1
+ ELSE
+ 0
+ END
+ ) AS "Luxury"
+FROM
+ film;
