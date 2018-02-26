@@ -1,5 +1,8 @@
 postgreSQL
 
+--PARA COPYAR LA BASE DE DATOS COMPLETA
+CREATE DATABASE nuevobd WITH TEMPLATE bdacopiar;
+
 --para crear usuario
 
 CREATE USER snicoper WITH PASSWORD '123456' NOCREATEDB NOCREATEUSER;
@@ -433,30 +436,6 @@ PostgreSQL proporciona dos formas de la expresión CASE.
 Lo siguiente ilustra la forma general de la declaración CASE:
 */
 
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
 SELECT
  SUM (
  CASE

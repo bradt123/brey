@@ -182,7 +182,18 @@ LANGUAGE 'plpgsql';
 
 select * from retorna('i');
 
+/***para update o actualizar datos*/
+create or replace function porcentage(x decimal)
+  returns boolean as
+  $$
+    BEGIN
+    update libros set precio = precio - (precio * $1);
+      return true;
+    END;
+  $$
+  LANGUAGE 'plpgsql';
 
+  /*******************************
 
 /*****FUNCION PARA SABER SI ES MAYUSCULA O MINUSCULA***/
 CREATE OR REPLACE FUNCTION mami(nom char)
@@ -216,3 +227,24 @@ begin
 end;
 $$
 LANGUAGE 'plpgsql';
+
+
+/**funcion para insertar datos*/
+
+create or replace function insertar_datos
+  (
+    id_producto integer,
+    producto varchar,
+    precio_costo numeric,
+    precio_venta numeric,
+    ganancia numeric,
+    estado varchar
+    )
+RETURNS boolean as 
+$$
+BEGIN
+  insert into productos values($1,$2,$3,$4,'ACTIVO');
+    return true;
+END;
+LANGUAGE 'plpgsql'
+$$

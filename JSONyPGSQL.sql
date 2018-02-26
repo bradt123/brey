@@ -103,7 +103,7 @@ Ver la siguiente declaración:
 json_each_text() para texto,
 json_each_key() funccion para obtener conjunto de claves
 en el objeto.
-json_typeof() funccion para saber que tipo de valor JSON 
+json_typeof() funcion para saber que tipo de valor JSON 
 externo.
 */
 
