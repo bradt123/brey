@@ -24,6 +24,12 @@ alter table "nombre_tabla_a_cambiar" rename to "nombre_nuevo";
 alter table books add column code serial not null primary key; o 
 alter table books add column name varchar(20);
 
+--para cambiar el tipo de dato de la columna
+alter table table_name alter column column_name type new_data_type;
+--para enteros(a integer)
+ALTER TABLE assets
+    ALTER COLUMN asset_no TYPE INT USING asset_no::integer;
+
 --para modificar la columna y que no acepte datos nulos
 
 alter table nombre_table alter column nombre_columna set not null
