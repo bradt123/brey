@@ -1,0 +1,55 @@
+WITH
+----------------------
+With CTE AS
+(Select
+ ID
+, NAME
+, AGE
+, ADDRESS
+, SALARY
+FROM COMPANY )
+Select * From CTE;
+--------------------------------------
+WITH RECURSIVE t(n) AS (
+   VALUES (0)
+   UNION ALL
+   SELECT SALARY FROM COMPANY WHERE SALARY < 20000
+)
+SELECT sum(n) FROM t;
+----------------------------------------------
+CREATE TABLE COMPANY1(
+   ID INT PRIMARY KEY     NOT NULL,
+   NAME           TEXT    NOT NULL,
+   AGE            INT     NOT NULL,
+   ADDRESS        CHAR(50),
+   SALARY         REAL
+);
+
+WITH moved_rows AS (
+   DELETE FROM COMPANY
+   WHERE
+      SALARY >= 30000
+   RETURNING *
+)
+INSERT INTO COMPANY1 (SELECT * FROM moved_rows);
+----------------------------------------------------
+FETCH 
+----------------------------------------------------
+SELECT
+    film_id,
+    title
+FROM
+    film
+ORDER BY
+    title 
+FETCH FIRST 1 ROW ONLY;
+----------------------------------------------------
+SELECT
+    film_id,
+    title
+FROM
+    film
+ORDER BY
+    title 
+OFFSET 5 ROWS 
+FETCH FIRST 5 ROW ONLY; 
