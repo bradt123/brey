@@ -77,7 +77,20 @@
 	Generalmente las evaluaciones a la arquitectura se hacen por miembros del equipo de desarrollo, arquitecto, diseñador, entre otros. Sin embargo puede haber también situaciones en las que intervengan personas especialistas en el tema. Otro que también se interesa por los resultados de una evaluación es el cliente, ya que en dependencia de los resultados puede tomar decisiones de continuar o no con el proyecto 
 
 5.- describa los modelos de arquitectura Estructurales
+
+	Sostienen que la AS está compuesta por componentes, conexiones
+	entre ellos y (usualmente) otros aspectos tales como configuración, estilo, restricciones,
+	semántica, análisis, propiedades, racionalizaciones, requerimientos, necesidades de los
+	participantes. El trabajo en esta área está caracterizada por el desarrollo de lenguajes de
+	descripción arquitectónica (ADLs).
+
 6.- describa los modelos de arquitectura de proceso
+
+	Se concentran en la construcción de la arquitectura, y en los pasos o
+	procesos involucrados en esa construcción. En esta perspectiva, la arquitectura es el resultado
+	de seguir un argumento (script) de proceso. Esta vista se ejemplifica con el actual trabajo sobre
+	programación de procesos para derivar arquitecturas.
+
 7.- que son los estilos de arquitectura?
 		Indican:
 		 Los tipos de componentes y conectores involucrados.
@@ -134,6 +147,55 @@ Stakeholders: Aquellas personas que están relacionadas, de cierta forma, con el
 2.- investigue y epesifique cuales son las tacticas mas comunes utilizadas para los atributos de calidad, disponibilidad, modificabilidad, performance, seguridad,testeabilidad,usabilidad?
 
 3.- mencione y describa las discrepancias entre arquitectura de software desde el punto de vista de la academia y de la industria
+			Academia                     Industria
+		La arquitectura se define
+		explícitamente
+										Prevalece una comprensión conceptual de
+										la arquitectura. Las definiciones explícitas
+										son mínimas, eventualmente mediante
+										notaciones
+
+		La arquitectura consiste en
+		componentes y conectores de
+		primera clase
+
+										No hay conectores explícitos de primera
+										clase (a veces hay soluciones ad hoc de
+										binding en tiempo de ejecución)
+
+		Los lenguajes de descripción de
+		arquitectura (ADLs) describen la
+		arquitectura explícitamente y a
+		veces la generan
+
+		
+										Se utilizan lenguajes de programación
+
+		Los componentes reutilizables
+		son entidades de caja negra
+
+										Los componentes son grandes piezas de
+										software de estructuras interna compleja, no
+										necesariamente encapsulados
+		Los componentes tienen
+		interfaces con un solo punto de
+		acceso
+
+										Las interfaces se proporcionan mediante
+										entidades (clases en los componentes). Las
+										entidades de interfaz no tienen diferencias
+										explícitas de entidades que no son de
+										interfaz
+
+		Se otorga prioridad a la
+		funcionalidad y la verificación
+		formal
+
+										La funcionalidad y los atributos de calidad
+										(rendimiento, robustez, tamaño,
+										reusabilidad, mantenibilidad) tienen igual
+										importancia
+
 
 4.- describa el enfoque de documentacion de aquitectura de software del instituto de ingenieria del software (SEI)
 
