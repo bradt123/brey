@@ -1,0 +1,139 @@
+1.-que es un atributo de calidad
+	
+	son aquelllas caracteristicas medibles, tales como desempeno o disponibilidad, que permiten expresar la calidad del sistema. de un punto de vista del cliente y de la organizacion del desarrollo.
+
+2.- que atributos de calidad  y concerns conoce? armar una taxonomia con ellos
+	
+		Atributo de Calidad                  Descripción
+
+		Disponibilidad				Es la medida de disponibilidad del sistema para el uso (Barbacci et al, 1995).
+
+		Confidencialidad		Es la ausencia de acceso no autorizado a la información (Barbacci et al, 1995).
+
+		Funcionalidad	Habilidad del sistema para realizar el trabajo para el cual fue concebido (Kazman et al., 2001).
+
+		Desempeño	Es el grado en el cual un sistema o componente cumple con sus funciones designadas, dentro de ciertas restricciones dadas, como velocidad, exactitud o uso de memoria. (IEEE 610.12).
+
+		Confiabilidad	Es la medida de la habilidad de un sistema a mantenerse operativo a lo largo del tiempo (Barbacci et al., 1995).
+
+		Seguridad externa	Ausencia de consecuencias catastróficas en el ambiente. Es la medida de ausencia de errores que generan pérdidas de información (Barbacci et al, 1995).
+
+		Seguridad interna	Es la medida de la habilidad del sistema para resistir a intentos de uso no autorizados y negación del servicio, mientras se sirve a usuarios legítimos (Kazman et al., 2001).
+		Tabla #2. Descripción 
+
+
+		Atributo de Calidad                          Descripción
+
+	Configurabilidad	Posibilidad que se otorga a un usuario experto a realizar ciertos cambios al sistema (Bosch et al., 1999).
+
+	Integrabilidad	Es la medida en que trabajan correctamente componentes del sistema que fueron desarrollados separadamente al ser integrados. (Bass et al. 1998)
+
+	Integridad	Es la ausencia de alteraciones inapropiadas de la información (Barbacci etal., 1995).
+
+	Interoperabilidad	Es la medida de la habilidad de que un grupo de partes del sistema trabajen con otro sistema. Es un tipo especial deintegrabilidad (Bass et al. 1998)
+
+	Modificabilidad	Es la habilidad de realizar cambios futuros al sistema. (Bosch et al. 1999).
+
+	Mantenibilidad	Es la capacidad de someter a un sistema a reparaciones y evolución(Barbacci et al., 1995). Capacidad de modificar el sistema de manera rápida y a bajo costo (Bosch et al. 1999).
+
+	Portabilidad	Es la habilidad del sistema para ser ejecutado en diferentes ambientes de computación. Estos ambientes pueden ser hardware, software o una combinación de los dos (Kazman et al., 2001).
+
+	Reusabilidad	Es la capacidad de diseñar un sistema de forma tal que su estructura o parte de sus componentes puedan ser reutilizados en futuras aplicaciones (Bass et al. 1998).
+
+	Escalabilidad	Es el grado con el que se pueden ampliar el diseño arquitectónico, de datos o procedimental (Pressman, 2002).
+
+	Capacidad dePrueba	Es la medida de la facilidad con la que el software, al ser sometido a una serie de pruebas, puede demostrar sus fallas. Es la probabilidad de que, asumiendo que tiene al menos una falla, el software fallará en su próxima ejecución de prueba (Bass et al. 1998).
+
+3.- que resultados produce la evaluacion de un arquitectura?
+
+	Una vez que se ha efectuada la evaluación se debe elaborar un reporte. Que debe presentarse como un documento preliminar, con la finalidad de que se corrija por las personas que participaron en la evaluación. El contenido del reporte responde a dos tipos de preguntas (4):
+
+	• ¿Se ha diseñado la arquitectura más apropiada para el sistema?
+	• ¿Cuál de las arquitecturas propuestas es la más apropiada para el sistema a construir?
+
+	Además de responder estas preguntas, el reporte también indica el grado en que se cumplieron los atributos de calidad.
+
+	¿Cuáles son las salidas de una evaluación arquitectónica? (6)
+
+	• Lista priorizada de los atributos de calidad requeridos para la arquitectura que está siendo evaluada.
+	• Riesgos y no riesgos.
+	Pasos Básicos para una Evaluación (5)
+	• Preparación.
+	o Contexto.
+	o Evaluador.
+	o Alcance.
+	o Representación de la Arquitectura.
+	• Realización.
+	o Presentar el problema de negocio a resolver y la arquitectura planteada.
+	o Evalúa, el costo, la funcionalidad, los atributos de calidad.
+	o Revisan requerimientos y posibles cambios.
+	o Discuten problemas y observaciones.
+	• Generar y distribuir los resultados
+	o Issues y Recomendaciones.
+	o Análisis de riesgo.
+
+4.- quienes estan involucrados en la evaluacion de la arquitectura de software?
+	
+	Generalmente las evaluaciones a la arquitectura se hacen por miembros del equipo de desarrollo, arquitecto, diseñador, entre otros. Sin embargo puede haber también situaciones en las que intervengan personas especialistas en el tema. Otro que también se interesa por los resultados de una evaluación es el cliente, ya que en dependencia de los resultados puede tomar decisiones de continuar o no con el proyecto 
+
+5.- describa los modelos de arquitectura Estructurales
+6.- describa los modelos de arquitectura de proceso
+7.- que son los estilos de arquitectura?
+		Indican:
+		 Los tipos de componentes y conectores involucrados.
+		 Patrones y restricciones de interconexión o
+		composición entre ellos: Invariantes del estilo
+		(restricciones)
+		Asociados a cada estilo hay una serie de
+		propiedades que lo caracterizan, determinando sus
+		ventajas e inconvenientes, condicionando la
+		elección de uno u otro estilo.
+
+8.- a que se refiere el concepto de abstraccion de arquitectura de software?
+
+	La arquitectura es una
+	abstracción de un sistema. 
+	--------------------------
+	Olvidar información que diferencia ciertas cosas y así
+	poder tratarlas como si fueran similares.
+	9.- que son lo Escenarios en arquitectura de software?
+
+    “Los escenarios describen una utilización anticipada o deseada del sistema, y típicamente se expresan en una frase” (3). “Los mismos representan una abstracción de los requerimientos más importantes de un sistema”
+    ------------------------------
+		Los escenarios son una técnica desarrollada en el SEI
+		para desentrañar las cuestiones relativas a una
+		arquitectura a través de pruebas y evaluación manual.
+
+		 Los escenarios están relacionados con las
+		preocupaciones arquitectónicas tales como los atributos
+		de calidad, y tienen como objetivo poner de relieve las
+		consecuencias de las decisiones arquitectónicas que se
+		encapsulan en el diseño.
+
+		 Los escenarios pueden ser concebidos para hacer frente
+		a cualquier requisito de calidad de interés en una
+		aplicación dada. 	
+
+=======================================
+Stakeholders: Aquellas personas que están relacionadas, de cierta forma, con el sistema, ya sea un desarrollador, usuario o gerente, etcétera.
+
+
+
+
+
+
+
+**************************seccion 2***********************************
+1.- que es una tactica de disponibilidad?
+
+	La capacidad de que el sistema esté total o
+	parcialmente operativo al mismo tiempo que es
+	requerido para manejar eficazmente las fallas que
+	puedan afectar la disponibilidad del sistema.
+
+2.- investigue y epesifique cuales son las tacticas mas comunes utilizadas para los atributos de calidad, disponibilidad, modificabilidad, performance, seguridad,testeabilidad,usabilidad?
+
+3.- mencione y describa las discrepancias entre arquitectura de software desde el punto de vista de la academia y de la industria
+
+4.- describa el enfoque de documentacion de aquitectura de software del instituto de ingenieria del software (SEI)
+
