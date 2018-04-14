@@ -199,3 +199,13 @@ Stakeholders: Aquellas personas que están relacionadas, de cierta forma, con el
 
 4.- describa el enfoque de documentacion de aquitectura de software del instituto de ingenieria del software (SEI)
 
+1.- indentificar a los clientes, usuarios,stakeholders del sistema 
+ - identificar requerimientos funcionales  y no funcionales
+
+ * clientes : unidad smart,dispositivos,hardware relacionado con la AP
+ 			  perifericos(actores secundarios proporcionan capacidades especificas alos dispositivos,GPS), dispositivos de expansion(actor secundario que proporciona al sistema una plataforma com mayor capacidad, mayor dispositivos de salida)	
+ 
+ * usuarios : usuario final,entidad o persona que pudiera estar interesada en 			   la consulta
+
+ * stakeholders : usuarios del sistema,proveedores y desarrolladores del 					 sistema
+
