@@ -1,0 +1,33 @@
+.....para devolver  al talbla completa recibiendo un parametro
+create or replace function p(idd int4)
+returns setof department as 
+$$
+begin 
+return query
+	select * from department
+	where id = idd;
+end;
+
+$$
+language plpgsql;
+////////////////////////////////////////////////
+CREATE OR REPLACE FUNCTION sp_consulta_topes(IN text character varying,idObraSocial integer, idPlan Integer)
+RETURNS SETOF vw_topes AS
+$BODY$
+BEGIN
+    RETURN query
+        Select * from vw_topes 
+        where (upper(grupo_practicas) like '%'|| upper(regexp_replace ($1,' ','%', 'g' )) || '%'
+         or 
+         upper(practica_n) like '%'|| upper(regexp_replace ($1,' ','%','g' )) || '%' 
+        or
+        upper(practica) like '%'|| upper($1) || '%' )
+        and (fecha_baja is null or fecha_baja>current_date)
+        and id_obra_social=COALESCE(idObraSocial, id_obra_social) and id_plan=COALESCE(idPlan, id_plan);
+END;
+
+$BODY$
+LANGUAGE plpgsql VOLATILE 
+
+////////////////////////////
+https://sqltemuco.wordpress.com/2016/10/06/retornar-multiples-registros-en-postgresql/
