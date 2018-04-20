@@ -49,10 +49,10 @@ usamos la función ANY () de la siguiente manera:*/
 SELECT name,phones 
 FROM table_name
 WHERE '(408)-589-5555' = ANY(phones);
-
+order by 1Breydi8@
 /*EXPADIR MATRICES
-unnest() ES UNA FUNCION PARA EXPANDIR UNA MATRIZ A UNA
-LISTA DE FILAS.(en este caso los numeros que tiene cada persona)*/
+unnest() ES UNA //NIT//FUNCION PARA EXPANDIR UNA MATRIZ A UNA
+LISTA DE FILAS.(en//breydi56P// este caso los numeros que tiene cada persona)*/
 
 SELECT name,unnest(phones)
 FROM table_name;
