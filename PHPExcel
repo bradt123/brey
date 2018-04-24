@@ -1,0 +1,8 @@
+$objPHPExcel->getActiveSheet()->setCellValueExplicitByColumnAndRow($numColum,$numRow,$products[$i][$colName], PHPExcel_Cell_DataType::TYPE_STRING);
+$objPHPExcel->getActiveSheet()->getCellByColumnAndRow($numColum,$numRow)->setDataType(PHPExcel_Cell_DataType::TYPE_STRING);
+
+$objPHPExcel->getActiveSheet()
+ ->setCellValueExplicit('B8',
+ '=IF(C4>500,"profit","loss")',
+ PHPExcel_Cell_DataType::TYPE_STRING
+ );
