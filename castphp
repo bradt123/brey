@@ -1,0 +1,10 @@
+$variable = "23";
+$variable = (int) $variable;
+=========
+(int), (integer) - fuerza a entero (integer)
+(real), (double), (float) - fuerza a número con decimales (coma flotante)
+(string) - fuerza a cadena (string)
+(array) - fuerza a array (array)
+(object) - fuerza a objeto (object)
+(unser) - fuerza a null
+(binary) - fuerza a "binary string"
