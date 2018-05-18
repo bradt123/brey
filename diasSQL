@@ -32,6 +32,7 @@ CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
 
-
+------------------------------
+echo date('G:i a',strtotime("13:05"));
 
 
