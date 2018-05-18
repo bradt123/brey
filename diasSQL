@@ -1,0 +1,37 @@
+create or replace function dia(fecha)
+returns text as 
+$body$
+
+DECLARE
+res int4;
+
+begin 
+
+res = extract(dow from fecha);
+
+if(res = 1)then
+	return 'lunes';
+elsif(res = 2)then
+	return 'martes';
+elsif (res = 3)then
+	return 'miercoles';
+elsif( res = 4)then
+	return 'jueves';
+elsif( res = 5)then
+	return 'viernes';
+elsif(res = 6)then
+	return 'sabado';
+else
+	return 'domingo';
+end if;
+end;
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
+
+
+
+
