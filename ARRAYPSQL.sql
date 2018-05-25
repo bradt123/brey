@@ -115,3 +115,32 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
+===================
+CREATE OR REPLACE FUNCTION sqlserver.f_insert_modelo_tprueba (
+)
+RETURNS text AS
+$body$
+DECLARE
+		v_consulta    varchar;
+        v_modelo record;
+        v_re record;
+BEGIN
+
+ select mi.valor
+    into v_re
+    from kaf.tactivo_fijo ac 
+    inner join kaf.tactivos_migra mi on mi.codigo = ac.codigo  
+    where mi.descripcion = 'Modelo';                   
+    
+insert into sqlserver.tprueba (modelo)values(v_re.valor);
+--update sqlserver.tprueba set modelo=v_re.valor;	
+
+
+    return v_modelo;
+END;
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
