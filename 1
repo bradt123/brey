@@ -1,0 +1,198 @@
+CREATE OR REPLACE FUNCTION sss.trisg_usuario (
+)
+RETURNS trigger AS
+$body$
+/**************************************************************************
+ SISTEMA ENDESIS - SISTEMA DE SEGURIDAD (SSS)
+***************************************************************************
+ SCRIPT: 		trisg_usuario
+ DESCRIPCIÓN: 	Permite insertar, modificar y eliminar usuarios de la base
+                de datos
+ AUTOR: 		Veimar Soliz Poveda
+ FECHA:			2008-04-01
+ COMENTARIOS:	
+***************************************************************************
+ HISTORIA DE MODIFICACIONES:
+
+ DESCRIPCION:	se adapta la función para manejo de ecriptación 
+                a partir de una semilla y se quitan los privilegios de superususarios
+ AUTOR:			Rensi ARteaga Copari
+ FECHA:			19-03-2010
+
+***************************************************************************/
+--------------------------
+-- CUERPO DE LA FUNCIÓN --
+--------------------------
+
+--**** DECLARACION DE VARIABLES DE LA FUNCIÓN (LOCALES) ****---
+
+
+DECLARE
+
+    --PARÁMETROS FIJOS
+
+    g_consulta         text;    -- VARIABLE QUE CONTENDRÁ LA CONSULTA DINÁMICA PARA EL FILTRO
+    g_new_login            text;
+    g_old_login            text;
+    y varchar;
+    g_semilla			varchar;
+BEGIN
+
+      --*** EJECUCIÓN DEL PROCEDIMIENTO ESPECÍFICO
+
+  --procedimiento de creación de base de datos
+  
+  --Semilla base
+  g_semilla = '+_)(*&^%$#@!@TERPODO';
+
+
+    IF TG_OP = 'INSERT' THEN
+
+        BEGIN
+        select (current_database()::text)||'_'||NEW.login into g_new_login;
+        
+             -- Creación Usuario
+             g_consulta := 'CREATE USER "'||g_new_login||'"';
+             g_consulta := g_consulta||' WITH ENCRYPTED PASSWORD '''||md5(g_semilla||NEW.contrasenia)||'''';
+             g_consulta := g_consulta||' VALID UNTIL '''||NEW.fecha_expiracion||'''';
+
+             EXECUTE(g_consulta);
+--raise exception '%',g_consulta;
+          
+             --ASGINACION DE ROLES
+             
+             y:='ALTER GROUP ROL_USUARIOS_ENDESIS  
+             ADD USER  "'||g_new_login || '"';
+             EXECUTE (y); 
+             
+
+        END;
+
+  --procedimiento de modificacion de usuario
+
+--/*
+   ELSIF TG_OP = 'UPDATE' THEN
+
+        BEGIN
+
+--          /*
+             --Modificación de login
+           select (current_database()::text)||'_'||NEW.login into g_new_login;
+           select (current_database()::text)||'_'||OLD.login into g_old_login;
+             raise notice ' new login: %   old login: %',g_new_login,g_old_login;
+             
+             --rcm 30/08/2011: si no existe el old login lo crea (útil cuando se levanta una bd con otro nombre pero con mismos usuarios)
+             IF NOT EXISTS(SELECT r.rolname
+                                  FROM pg_catalog.pg_roles r
+                                  where r.rolname = g_old_login) THEN
+             	--Crea el usuario de base de datos
+                g_consulta := 'CREATE USER "'||g_new_login||'"';
+                g_consulta := g_consulta||' WITH ENCRYPTED PASSWORD '''||md5(g_semilla||NEW.contrasenia)||'''';
+                g_consulta := g_consulta||' VALID UNTIL '''||NEW.fecha_expiracion||'''';
+                EXECUTE(g_consulta);
+             
+                 --ASGINACION DE ROLES
+                 y:='ALTER GROUP ROL_USUARIOS_ENDESIS
+                 ADD USER  "'||g_new_login || '"';
+                 EXECUTE (y); 
+             END IF;
+             --fin rcm
+             
+            IF (OLD.login != NEW.login) THEN
+                g_consulta := 'ALTER USER "'||g_old_login||'" RENAME TO "'||g_new_login || '"';
+                 
+--          raise exception '%',g_consulta;
+            EXECUTE(g_consulta);
+                
+                
+
+             -- Modificación de la contraseña
+
+                 IF (md5(OLD.contrasenia) != NEW.contrasenia) THEN
+
+                    g_consulta := NULL;
+                    g_consulta := 'ALTER USER "'||g_new_login || '"';
+                    g_consulta := g_consulta|| ' WITH ENCRYPTED PASSWORD '''||md5(g_semilla||NEW.contrasenia)||'''';
+
+                    EXECUTE(g_consulta);
+                    
+                    
+                  --  RAISE EXCEPTION '%',g_consulta;
+
+                 END IF;
+
+                 -- Modificación de la Fecha de Validez del usuario
+
+                 IF (OLD.fecha_expiracion != NEW.fecha_expiracion) THEN
+
+                    g_consulta := NULL;
+                    g_consulta := 'ALTER USER "'||g_new_login || '"';
+                    g_consulta := g_consulta||' VALID UNTIL '''||NEW.fecha_expiracion||'''';
+
+                    EXECUTE(g_consulta);
+
+                 END IF;
+
+
+             ELSE
+
+                 -- Modificación de la contraseña
+                 
+               
+
+                 IF (md5(OLD.contrasenia) != NEW.contrasenia) THEN
+                 
+                   
+                    g_consulta := NULL;
+                    g_consulta := 'ALTER USER "'||g_old_login || '"';
+                    --g_consulta := 'ALTER USER '||OLD.login;
+                    g_consulta := g_consulta||' WITH ENCRYPTED PASSWORD '''||md5(g_semilla||NEW.contrasenia)||'''';
+
+
+                    EXECUTE(g_consulta);
+
+                 END IF;
+
+                 -- Modificación de la Fecha de Validez del usuario
+
+                 IF (OLD.fecha_expiracion != NEW.fecha_expiracion) THEN
+
+                    g_consulta := NULL;
+                    g_consulta := 'ALTER USER "'||g_old_login || '"';
+                 
+                    g_consulta := g_consulta||' VALID UNTIL '''||NEW.fecha_expiracion||'''';
+
+                    EXECUTE(g_consulta);
+
+                 END IF;
+
+
+             END IF;         
+--                                    */
+  
+        END;
+
+  --procedimiento de eliminación de usuario
+
+   ELSIF TG_OP = 'DELETE' THEN
+
+        BEGIN
+        select (current_database()::text)||'_'||OLD.login into g_old_login;
+             g_consulta := 'DROP USER "'||g_old_login || '"';
+            
+             EXECUTE(g_consulta);
+
+        END;
+        
+
+   END IF;
+
+   RETURN NULL;
+
+END;
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
