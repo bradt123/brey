@@ -196,3 +196,11 @@ VOLATILE
 CALLED ON NULL INPUT
 SECURITY INVOKER
 COST 100;
+================
+			select 
+            case when
+            p.tipo_documento = 'tipo_documento' then 
+            p.id_tipo_doc_identificacion = 1::integer when
+            p.tipo_documento = 'pasaporte' then
+            p.id_tipo_doc_identificacion = 2::integer end 
+            from segu.tpersona p
