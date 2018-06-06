@@ -1,0 +1,50 @@
+despues de resolver 
+
+git add . 
+o 
+git add <nombre archivos>
+
+luego
+git commit 
+o 
+git commit -m "resolucion de conflicto"
+git push origin <rama>
+
+guardar 
+wq
+listo 
+---------------------------
+git merge --abort para desacer la union 
+----------------------------------
+atajos 
+git log --oneline 
+git log --oneline |cat
+
+got log --oneline --decorate --graph --all
+
+===================================
+hace directo
+git add . && git commit -m "nombre"
+==============================
+para eliminar commits
+rebase puede sobrescribir la hostoria, alterar los commit 
+
+git rebase -i <hash del commit>^
+git rebase -i 41a2ea9^ 
+
+abrira el editor 
+el que desees eliminar en ves de 
+pick 41a2ea9
+drop 41a2ea9  elimina el commit que desees
+o 
+d 41a2ea5
+
+una ves concluido wq para guardar
+y se agregara un commit
+en head
+ese puedes eliminarlo con 
+git reset HEAD~1
+y listo 
+
+
+
