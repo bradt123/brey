@@ -8,7 +8,11 @@ luego
 git commit 
 o 
 git commit -m "resolucion de conflicto"
+
+lugo puedo subir haciendo
 git push origin <rama>
+o para bajar 
+git pull origin <rama>
 
 guardar 
 wq
@@ -45,6 +49,15 @@ en head
 ese puedes eliminarlo con 
 git reset HEAD~1
 y listo 
+===========================
+para saber si hay cambios en mi remoto
 
+git fetch origin 
 
-
+si existe hacer git pull origin <rama>
+si exite conflictos resolverlos
+luego 
+git add .
+luego 
+git commit -m "nombre"
+y listo
