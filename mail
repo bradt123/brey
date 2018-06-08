@@ -1,0 +1,94 @@
+CREATE OR REPLACE FUNCTION pruebas.sms (
+)
+RETURNS boolean AS
+$body$
+ declare
+ v_fecha record;
+ v_n integer;
+ v_acceso_directo varchar;
+ v_clase varchar;
+ v_tipo_noti varchar;
+ v_titulo varchar;
+ v_cro record;
+ fe record;
+ v_cont integer=0;
+ v_cont1 integer=0;
+ usuario 	record;
+ 
+ begin 
+          v_acceso_directo = '../../../sis_kactivos_fijos/vista/movimiento/Movimiento.php';
+          v_clase = 'Movimiento';                
+          v_tipo_noti = 'notificacion';
+          v_titulo  = 'Notificacion Devolucion Prestamo'; 
+                            
+ for fe in 
+          select mo.fecha_dev_prestamo
+          from kaf.tmovimiento mo
+          where mo.fecha_dev_prestamo is not null
+          
+          loop			                    
+          v_n = fe.fecha_dev_prestamo - current_date;
+   
+		if(v_n = -39)then  
+         select fun.desc_funcionario2 as d,p.nombre,p.correo	
+          into v_cro	
+          from kaf.tmovimiento mo
+          left join orga.vfuncionario fun on fun.id_funcionario = mo.id_funcionario
+		  inner join segu.tusuario usu1 on usu1.id_usuario = mo.id_usuario_reg
+          inner join segu.tpersona p on p.id_persona = usu1.id_persona
+          where mo.fecha_dev_prestamo-current_date = -39;
+                                      	
+ 			insert into pruebas.talarma (descripcion,correos,titulo,tipo,acceso_directo,clase) values( 
+                  '<div  style="font-size: 12px; color: #000080; font-family: Verdana, Arial;">
+                                    <p>
+                                        <span>De: <b>Sistema ERP BOA</b></span><br>
+                                        <span>Fecha: '||now()||'</span><br>
+                                        <span>Asunto: '||v_titulo||'</span><br>
+                                        <span>Para: "'||v_cro.correo||'" </span><br>
+                                        <span>Cc: "sac@boa.bo" </span>
+                                    </p>
+                                </div><br><br>
+                                <div style="font-size: 12px; color: #000080; font-family: Verdana, Arial;">
+                                	<span><b>Estimad@:</b></span>'||v_cro.nombre||'<br><br>
+                                    <span><b>Usuarios proximos a cumplir</b></span><br><br>                                    
+                                    <span><b>usuarios: </b> </span>'||v_cro.d||'                                   
+                                </div>',                  
+                  'bradtbrey1234@gmail.com',v_titulo,v_tipo_noti,v_acceso_directo,v_clase);
+                
+		elsif(v_n = -79)then
+        
+         select fun.desc_funcionario2 as d,p.nombre,p.correo	
+          into v_cro 	
+          from kaf.tmovimiento mo
+          left join orga.vfuncionario fun on fun.id_funcionario = mo.id_funcionario
+		  inner join segu.tusuario usu1 on usu1.id_usuario = mo.id_usuario_reg
+          inner join segu.tpersona p on p.id_persona = usu1.id_persona
+          where mo.fecha_dev_prestamo-current_date = -79;
+          
+          
+ 			insert into pruebas.talarma (descripcion,correos,titulo,tipo,acceso_directo) values( 
+                  '<div  style="font-size: 12px; color: #000080; font-family: Verdana, Arial;">
+                                    <p>
+                                        <span>De: <b>Sistema ERP BOA</b></span><br>
+                                        <span>Fecha: '||now()||'</span><br>
+                                        <span>Asunto: '||v_titulo||'</span><br>
+                                        <span>Para: "'||v_cro.correo||'" </span><br>
+                                        <span>Cc: "sac@boa.bo" </span>
+                                    </p>
+                                </div><br><br>
+                                <div style="font-size: 12px; color: #000080; font-family: Verdana, Arial;">
+                                	<span><b>Estimad@:</b></span>'||v_cro.nombre||'<br><br>
+                                    <span><b>Usuarios que cumplieron la fecha de devolucion</b></span><br><br>                                                                                                    
+                                    <span><b>usuarios: </b> </span>'||v_cro.d||'
+                                </div>',                  
+                  'bradtbrey1234@gmail.com',v_titulo,v_tipo_noti,v_acceso_directo); 		                                                    
+		end if;   
+        end loop;
+        	return true;
+	end;
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
