@@ -1,0 +1,31 @@
+CREATE OR REPLACE FUNCTION ti.arre (
+)
+RETURNS varchar [] AS
+$body$
+DECLARE
+  v varchar[];
+  v1 varchar[];
+  con integer=0;
+  tu record;
+  r record;
+  en integer;
+BEGIN
+for tu in (select m.fecha_dev_prestamo
+			from kaf.tmovimiento m)   
+            loop 
+		en = tu.fecha_dev_prestamo-current_date;
+        if en = -6 then
+			v[con]=tu.fecha_dev_prestamo;
+        elsif en = -21 then
+        	v1[con] = tu.fecha_dev_prestamo;
+        end if;
+    	con = con+1;
+    end loop;
+    return v1;
+END;
+$body$
+LANGUAGE 'plpgsql'
+VOLATILE
+CALLED ON NULL INPUT
+SECURITY INVOKER
+COST 100;
