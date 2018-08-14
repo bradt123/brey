@@ -1,0 +1,75 @@
+var d = [{"amount":"500"},{"amount":"750"},{"amount":"250"}]
+var total=0
+d.forEach(function(obj){
+	total += parseInt(obj.amount)
+	})
+console.log(total)
+
+=========================cortar===================
+cadena.substr(inicio[, longitud])
+==================================================
+
+var arreglo = [
+  {
+    nombre: "John Doe",
+    edad: 50
+  },
+  {
+    nombre: "Pedro",
+    edad: 20
+  },
+  {
+    nombre: "Juanita",
+    edad: 22
+  }
+];
+
+var s = arreglo.reduce(function(acumulador,siguiente){
+    return {
+        edad:acumulador.edad + siguiente.edad
+    };
+},{edad:0});
+
+=========================with recu same table================
+SELECT students.first_name, students.last_name, buddies.email
+    FROM students
+    JOIN students buddies
+    ON students.buddy_id = buddies.buddy_id;
+=======================croos join =============================
+ create table comidas(
+  codigo serial,
+  nombre varchar(30),
+  precio decimal(4,2),
+  rubro char(6),-- 'plato'=plato principal', 'postre'=postre
+  primary key(codigo)
+ );
+
+ insert into comidas(nombre,precio,rubro) values('ravioles',5,'plato');
+ insert into comidas(nombre,precio,rubro) values('tallarines',4,'plato');
+ insert into comidas(nombre,precio,rubro) values('milanesa',7,'plato');
+ insert into comidas(nombre,precio,rubro) values('cuarto de pollo',6,'plato');
+ insert into comidas(nombre,precio,rubro) values('flan',2.5,'postre');
+ insert into comidas(nombre,precio,rubro) values('porcion torta',3.5,'postre');
+
+ select c1.nombre as platoprincipal,
+  c2.nombre as postre,
+  c1.precio+c2.precio as total
+  from comidas as c1
+  cross join comidas as c2;
+
+ select c1.nombre as platoprincipal,
+  c2.nombre as postre,
+  c1.precio+c2.precio as total
+  from comidas as c1
+  cross join comidas as c2
+  where c1.rubro='plato' and
+  c2.rubro='postre';
+
+ select c1.nombre as platoprincipal,
+  c2.nombre as postre,
+  c1.precio+c2.precio as total
+  from comidas as c1
+  join comidas as c2
+  on c1.codigo<>c2.codigo
+  where c1.rubro='plato' and
+  c2.rubro='postre';
