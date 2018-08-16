@@ -1,0 +1,273 @@
+body
+{
+ text-align:center;
+ width:100%;
+ margin:0 auto;
+ padding:0px;
+ font-family:helvetica;
+ background-color:#FA8258;
+}
+#wrapper
+{
+ text-align:center;
+ margin:0 auto;
+ padding:0px;
+ width:995px;
+}
+#checkbox_div
+{
+ width:375px;
+ margin-left:309px;
+}
+#checkbox_div p
+{
+ margin:5px;
+ color:white;
+ font-weight:bold;
+ font-size:17px;
+}
+#checkbox_div li
+{
+ color:white;
+ display:inline-block;
+ margin:5px;
+ font-size:17px;
+ font-weight:bold;
+}
+#checkbox_div input[type="checkbox"]
+{
+ width:20px;
+ height:20px;
+}
+#employee_table
+{
+ color:#FE642E;
+ background-color:white;
+ text-align:center;
+}
+#employee_table th
+{
+ border:1px dashed #FE642E;
+}
+#employee_table td
+{
+ min-width:70px;
+ border:1px dashed #FE642E;
+}
+---------------------
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="table_style.css">
+<script type="text/javascript">
+function hide_show_table(col_name)
+{
+ var checkbox_val=document.getElementById(col_name).value;
+ if(checkbox_val=="hide")
+ {
+  var all_col=document.getElementsByClassName(col_name);
+  for(var i=0;i<all_col.length;i++)
+  {
+   all_col[i].style.display="none";
+  }
+  document.getElementById(col_name+"_head").style.display="none";
+  document.getElementById(col_name).value="show";
+ }
+	
+ else
+ {
+  var all_col=document.getElementsByClassName(col_name);
+  for(var i=0;i<all_col.length;i++)
+  {
+   all_col[i].style.display="table-cell";
+  }
+  document.getElementById(col_name+"_head").style.display="table-cell";
+  document.getElementById(col_name).value="hide";
+ }
+}
+</script>
+</head>
+<body>
+<div id="wrapper">
+
+<div id="checkbox_div">
+ <p>Show Hide Column</p>
+ <li><input type="checkbox" value="hide" id="name_col" onchange="hide_show_table(this.id);">Name</li>
+ <li><input type="checkbox" value="hide" id="age_col" onchange="hide_show_table(this.id);">Age</li>
+ <li><input type="checkbox" value="hide" id="city_col" onchange="hide_show_table(this.id);">City</li>
+</div>
+
+<table id="employee_table" align="center" cellpadding=10>
+<tr>
+ <th>S.no</th>
+ <th id="name_col_head">Name</th>
+ <th id="age_col_head">Age</th>
+ <th id="city_col_head">City</th>
+</tr>
+
+<tr>
+ <td>1</td>
+ <td class="name_col">Amit</td>
+ <td class="age_col">26</td>
+ <td class="city_col">Agra</td>
+</tr>
+
+<tr>
+ <td>2</td>
+ <td class="name_col">Rahul</td>
+ <td class="age_col">22</td>
+ <td class="city_col">Mumbai</td>
+</tr>
+
+<tr>
+ <td>3</td>
+ <td class="name_col">Manoj</td>
+ <td class="age_col">31</td>
+ <td class="city_col">Delhi</td>
+</tr>
+
+<tr>
+ <td>4</td>
+ <td class="name_col">Rashmi</td>
+ <td class="age_col">25</td>
+ <td class="city_col">Bhopal</td>
+</tr>
+
+<tr>
+ <td>5</td>
+ <td class="name_col">Shivam</td>
+ <td class="age_col">23</td>
+ <td class="city_col">Jaipur</td>
+</tr>
+
+</table>
+
+</div>
+</body>
+</html>
+
+
+===========================================================
+<html>
+<head>
+<script>
+ 
+  function show_hide_column(col_no, do_show) {
+
+    var stl;
+    if (do_show) stl = 'block'
+    else         stl = 'none';
+
+    var tbl  = document.getElementById('id_of_table');
+    var rows = tbl.getElementsByTagName('tr');
+
+    for (var row=0; row<rows.length;row++) {
+      var cels = rows[row].getElementsByTagName('td')
+      cels[col_no].style.display=stl;
+    }
+  }
+
+</script>
+
+</head>
+<body>
+
+<table id='id_of_table' border=1>
+  <tr><td>  1</td><td>   one</td><td>     un</td><td>     eins</td></tr>
+  <tr><td>  2</td><td>   two</td><td>   deux</td><td>     zwei</td></tr>
+  <tr><td>  3</td><td> three</td><td>  trois</td><td>     drei</td></tr>
+  <tr><td>  4</td><td>  four</td><td>quattre</td><td>     vier</td></tr>
+  <tr><td>  5</td><td>  five</td><td>   cinq</td><td>f&uuml;nf</td></tr>
+  <tr><td>  6</td><td>   six</td><td>    six</td><td>    sechs</td></tr>
+</table>
+
+
+<form>
+
+  Enter column no: <input type='text' name=col_no>
+  <br>             <input type='button' onClick='javascript:show_hide_column(col_no.value,  true);' value='show'>
+                   <input type='button' onClick='javascript:show_hide_column(col_no.value, false);' value='hide'>
+
+</form>
+
+===================================================================================================
+-----------------wheno-----------------------------------
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+</head>
+<body>
+
+<div data-role="page" id="pageone">
+  <div data-role="header">
+    <h1>Column Toggle Table</h1>
+  </div>
+  
+  <div data-role="main" class="ui-content">
+     <p>The "column toggle table" will hide columns when there is not enough width to display the data.</p>
+    <p>In this example we have used the well-known Northwind sample database. Below is a selection from the "Customers" table.</p>
+    <h4>Slowly resize the width of your browser window. The layout will adjust itself to fit the "new" width of the browser. OR, you can use the "Columns..." button to choose which column should be hidden or shown.</h4>
+    <table data-role="table" data-mode="columntoggle" class="ui-responsive" id="myTable">
+      <thead>
+        <tr>
+          <th data-priority="6">CustomerID</th>
+          <th>CustomerName</th>
+          <th data-priority="1">ContactName</th>
+          <th data-priority="2">Address</th>
+          <th data-priority="3">City</th>
+          <th data-priority="4">PostalCode</th>
+          <th data-priority="5">Country</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Alfreds Futterkiste</td>
+          <td>Maria Anders</td>
+          <td>Obere Str. 57</td>
+          <td>Berlin</td>
+          <td>12209</td>
+          <td>Germany</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Antonio Moreno Taquería</td>
+          <td>Antonio Moreno</td>
+          <td>Mataderos 2312</td>
+          <td>México D.F.</td>
+          <td>05023</td>
+          <td>Mexico</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Around the Horn</td>
+          <td>Thomas Hardy</td>
+          <td>120 Hanover Sq.</td>
+          <td>London</td>
+          <td>WA1 1DP</td>
+          <td>UK</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Berglunds snabbköp</td>
+          <td>Christina Berglund</td>
+          <td>Berguvsvägen 8</td>
+          <td>Luleå</td>
+          <td>S-958 22</td>
+          <td>Sweden</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <div data-role="footer">
+    <h1>Footer Text</h1>
+  </div>
+</div> 
+
+</body>
+</html>
