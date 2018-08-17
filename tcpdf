@@ -1,0 +1,15 @@
+$pdf->CheckBox('field1', 5, false, array('id'=>'data'), array(), 'OK');
+
+$js = <<<EOD
+		var f = getField('field1');							     
+    		//app.alert(typeof(f.value));
+    		if(f.value=='Off'){
+    			cha(f.value);  
+    		}
+    		function cha(da){
+    			app.alert(da);
+    		}       
+    
+EOD;
+ 
+$pdf->IncludeJS($js);
