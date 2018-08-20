@@ -1,0 +1,550 @@
+<?php
+require_once dirname(__FILE__).'/../../pxp/lib/lib_reporte/ReportePDF.php';
+require_once(dirname(__FILE__) . '/../../lib/tcpdf/tcpdf_barcodes_2d.php');
+class RDetalleAFPDF extends  ReportePDF{
+    var $datos ;
+    var $ancho_hoja;
+    var $gerencia;
+    var $numeracion;
+    var $ancho_sin_totales;
+    var $cantidad_columnas_estaticas;
+
+    function Header() {
+        $this->Ln(3);
+
+        //cabecera del reporte
+        $this->Image(dirname(__FILE__).'/../../lib/imagenes/logos/logo.jpg', 16,5,40,20);
+        $this->ln(5);
+        $this->SetMargins(10, 40, 10);
+
+        $this->SetFont('','B',10);
+        $this->Cell(0,5,"DEPARTAMENTO ACTIVOS FIJOS",0,1,'C');
+        $this->Cell(0,5,"DETALLE DE ACTIVOS FIJOS",0,1,'C');
+        $this->Cell(0,5,'Del: '.$this->objParam->getParametro('fecha_ini').' Al '.$this->objParam->getParametro('fecha_fin').' Estado: '.$this->objParam->getParametro('estado'),0,1,'C');
+
+        $this->SetFont('','B',6);
+        $this->Ln(6);
+        //primera linea
+        $this->Cell(10,3,'NUM','TRL',0,'C');
+        $this->Cell(23,3,'CODIGO','TRL',0,'C');
+        
+        if($this->objParam->getParametro('desc_nombre') == 'desc'){
+            $this->Cell(50,3,'DESCRIPCIÓN','TRL',0,'C');
+        }else{
+            $this->Cell(50,3,'DENOMINACIÓN','TRL',0,'C');
+        }
+
+		
+        $this->Cell(15,3,'ESTADO','TRL',0,'C');
+        $this->Cell(15,3,'ESTADO ','TRL',0,'C');
+        $this->Cell(15,3,'FECHA','TRL',0,'C');
+        $this->Cell(15,3,'MONTO','TRL',0,'C');
+        $this->Cell(15,3,'IMPORTE','TRL',0,'C');
+        $this->Cell(15,3,'VALOR','TRL',0,'C');
+        $this->Cell(15,3,'C31','TRL',0,'C');
+        $this->Cell(15,3,'FECHA','TRL',0,'C');
+        $this->Cell(30,3,'UBICACIÓN','TRL',0,'C');
+        $this->Cell(30,3,'RESPONSABLE','TRL',1,'C');
+
+        //segunda linea
+        $this->Cell(10,3,'','BRL',0,'C');
+        $this->Cell(23,3,'','BRL',0,'C');
+        $this->Cell(50,3,'','BRL',0,'C');
+        $this->Cell(15,3,'','BRL',0,'C');
+        $this->Cell(15,3,'FUNCIONAL','BRL',0,'C');
+        $this->Cell(15,3,'COMPRA','BRL',0,'C');
+        $this->Cell(15,3,'(87%)','BRL',0,'C');
+        $this->Cell(15,3,'(100%)','BRL',0,'C');
+        $this->Cell(15,3,'ACTUAL','BRL',0,'C');
+        $this->Cell(15,3,'','BRL',0,'C');
+        $this->Cell(15,3,'COMP C31','BRL',0,'C');
+        $this->Cell(30,3,'','BRL',0,'C');
+        $this->Cell(30,3,'','BRL',0,'C');
+
+    }
+
+    function setDatos($datos) {
+
+        $this->datos = $datos;
+        //var_dump( $this->datos);exit;
+    }			
+    function  generarReporte()
+    {		
+        $this->AddPage();
+        $this->SetMargins(10, 40, 10);
+        $this->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);		
+        $this->Ln();		
+
+
+
+        //variables para la tabla
+        $codigo = '';
+        $contador = 0;
+
+        $cont_87 = 0;
+        $cont_100 = 0;
+        $cont_actual = 0;
+
+        $total_general_87 = 0;
+        $total_general_100 = 0;
+        $total_general_actual = 0;
+
+        $total_grupo_87 = 0;
+        $total_grupo_100 = 0;
+        $total_grupo_actual = 0;
+		
+        $i=1;
+        $this->tablewidths=array(10,23,50,15,15,15,15,15,15,15,15,30,30);
+        $this->tablealigns=array('C','L','L','C','C','C','R','R','R','C','L','L');
+        $tipo = $this->objParam->getParametro('tipo_reporte');
+		$control = $this->objParam->getParametro('activo_multi');
+		
+ /*$tbl = '<table border="1" style="font-size: 7pt;">'; 
+    foreach($this->datos as $record){          
+            if($record['nivel'] == 0 || $record['nivel'] == 1){
+                if ($codigo !='' && ($record['nivel'] == 0 || $record['nivel']== 1) && $cont_87>0) {
+                    $total_general_87 = $total_general_87 + $cont_87;
+                    $total_general_100 = $total_general_100 + $cont_100;
+                    $total_general_actual = $total_general_actual + $cont_actual;
+
+                    
+                    $tbl.='<tr >
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center">Total Parcial Grupo</td>
+                            <td width="5%" align="center"></td>
+                            <td width="8%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center">'.$cont_87.'</td>
+                            <td width="5%" align="center">'.$cont_100.'</td>
+                            <td width="5%" align="center">'.$cont_actual.'</td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                        </tr>'; 						                                  
+                    $total_grupo_100 += $cont_100;
+                    $total_grupo_87 += $cont_87;
+                    $total_grupo_actual += $cont_actual;
+                    $cont_100 = 0;
+                    $cont_87 = 0;
+                    $cont_actual = 0;
+
+                                            
+                    if($record['nivel'] == 0 && $codigo != $record['codigo_completo']){                        
+                    $tbl.='<tr >
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center">Total Final Grupo (' . $codigo . ')</td>
+                            <td width="5%" align="center"></td>
+                            <td width="8%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center">'.$total_grupo_87.'</td>
+                            <td width="5%" align="center">'.$total_grupo_100.'</td>
+                            <td width="5%" align="center">'.$total_grupo_actual.'</td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>                            
+                        </tr>';						
+                        $total_grupo_100 = 0;
+                        $total_grupo_87 = 0;
+                        $total_grupo_actual = 0;
+                        }                   
+                    }                
+                    $tbl.='<tr >
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center">'.$record['codigo_completo'].'</td>
+                            <td width="5%" align="center">'.$record['nombre'].'</td>
+                            <td width="5%" align="center"></td>
+                            <td width="8%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            
+                        </tr>'; 
+											                        
+            }else{            	                                  
+                    $tbl.='<tr>
+                            <td width="5%" align="center">' .$record['nivel'] == 2 ? $i : ''. '</td>
+                            <td width="5%" align="center">' .$record['nivel'] == 2 ? $record['codigo_af'] : $record['camino']. '</td>
+                            <td width="5%" align="center">' .$record['nivel'] == 2 ? $record['denominacion'] : $record['nombre']. '</td>
+                            <td width="5%" align="center">' .$record['estado'].'</td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center">' .$record['fecha_compra'] == '-' ? '-' : date("d/m/Y", strtotime($record['fecha_compra'])). '</td>
+                            <td width="5%" align="center">' .$record['monto_compra_orig']. '</td>
+                            <td width="5%" align="center">' .$record['monto_compra_orig_100']. '</td>                            
+                            <td width="5%" align="center">' .$record['monto_compra']. '</td>                            
+                            <td width="8%" align="center">' .$record['nro_cbte_asociado']. '</td>
+                            <td width="5%" align="center">' .($record['fecha_cbte_asociado'] == '-' )? '-' : date("d/m/Y", strtotime($record['fecha_cbte_asociado'])). '</td>                            
+                            <td width="5%" align="center">' .$record['ubicacion']. '</td>
+                            <td width="5%" align="center">' .$record['responsable']. '</td>
+                            
+                        </tr>';
+						 						                                                                
+                $i++;
+                $cont_100 += $record['monto_compra_orig_100'];
+                $cont_87  += $record['monto_compra_orig'];
+                $cont_actual  +=  $record['monto_compra'];
+											 	
+            }
+        }
+
+        $total_general_87 += $cont_87;
+        $total_general_100 += $cont_100;
+        $total_general_actual += $cont_actual;
+		
+                    $tbl.='<tr >
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center">Total Parcial Grupo</td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="8%" align="center"></td>
+                            <td width="5%" align="center">'.$cont_87.'</td>
+                            <td width="5%" align="center">'.$cont_100.'</td>
+                            <td width="5%" align="center">'.$cont_actual.'</td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>                            
+                        </tr>';				 						     
+
+                    $tbl.='<tr >
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center">Total Final Grupo (' . $codigo . ')</td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="8%" align="center"></td>
+                            <td width="5%" align="center">'.($total_grupo_87+$cont_87).'</td>
+                            <td width="5%" align="center">'.($total_grupo_100+$cont_100).'</td>
+                            <td width="5%" align="center">'.($total_grupo_actual+$cont_actual).'</td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            
+                        </tr>';  				 
+                    $tbl.='<tr >
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center">TOTALES AF</td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>
+                            <td width="8%" align="center"></td>
+                            <td width="5%" align="center">'.$total_general_87.'</td>
+                            <td width="5%" align="center">'.$total_general_100.'</td>
+                            <td width="5%" align="center">'.$total_general_actual.'</td>
+                            <td width="5%" align="center"></td>
+                            <td width="5%" align="center"></td>                            
+                            <td width="5%" align="center"></td>                            
+                            <td width="5%" align="center"></td>                            
+                        </tr>';									                                     
+        $tbl.='</table>';
+        $this->writeHTML ($tbl); */		
+		$hiddes = explode(',', $control);
+		$ascod = '';
+		$asdes = '';
+		$asest = '';
+		$asesf = '';
+		$asfec = '';
+		$asmon = '';
+		$asimp = '';
+		$asval = '';
+		$asc31 = '';
+		$asf31 = '';
+		$asubi = '';
+		$asres = '';
+											
+		for ($i=0; $i <count($hiddes) ; $i++) {
+		switch ($hiddes[$i]) {
+			case 'acod': $ascod = 'none'; break;
+			case 'ades': $asdes = 'none'; break;
+			case 'aest': $asest = 'none'; break;
+			case 'aesf': $asesf = 'none'; break;
+			case 'afec': $asfec = 'none'; break;
+			case 'amon': $asmon = 'none'; break;
+			case 'aimp': $asimp = 'none'; break;
+			case 'aval': $asval = 'none'; break;			
+			case 'ac31': $asc31 = 'none'; break;
+			case 'af31': $asf31 = 'none'; break;
+			case 'aubi': $asubi = 'none'; break;
+			case 'ares': $asres = 'none'; break;								
+			}									 			
+		}
+		//var_dump($hiddes);exit;		
+				
+       $html = <<<EOF
+    <style type="text/css">
+	table, th, td {
+   		border: 1px solid black;
+   		border-collapse: collapse;
+   		font-family: "Calibri";
+   		font-size: 6pt;
+   		font-weight: bold;   		
+	}
+    .cod {
+    	display: $ascod;	
+    }
+	.des {
+		display: $asdes;		
+	}
+    .est {
+    	display: $asest;
+    }
+    .esf {
+    	display: $asesf;
+    }
+    .fec {
+    	display: $asfec;
+    }
+    .mon {
+    	display: $asmon;
+    }
+    .imp {
+    	display: $asimp;
+    }
+    .val {
+    	display: $asval;
+    }
+    .c31 {
+    	display: $asc31;
+    }
+    .f31 {
+    	display: $asf31;
+    }
+    .ubi {
+    	display: $asubi;
+    }
+    .res {
+    	display: $asres;
+    }    
+
+    </style>        
+	<table border="1" cellpadding="1">				
+			<tr align="center">
+				<th width="4%">NUM</th>
+				<th width="8.5%" class="cod">CODIGO</th>
+				<th width="19%" class="des">DESCRIPCION</th>
+				<th width="6%" class="est">ESTADO</th>
+				<th width="6%" class="esf">ESTADO <br> FUNCIONAL</th>				
+				<th width="6%" class="fec">FECHA <br> COMPRA</th>				
+				<th width="6%" class="mon">MONTO <br> (87%)</th>				
+				<th width="6%" class="imp">IMPORTE <br> (100%)</th>				
+				<th width="6%" class="val">VALOR <br> ACTUAL</th>				
+				<th width="5%" class="c31">C31</th>				
+				<th width="6%" class="f31">FECHA <br> COMP C31</th>				
+				<th width="12%" class="ubi">UBICACION</th>
+				<th width="11%" class="res">RESPONSABLE</th>
+			</tr>				
+			<tr>
+				<td width="4%">data1</td>
+				<td width="8.5%" class="cod">data2</td>
+				<td width="19%" class="des">data3</td>
+				<td width="6%" class="est">data4</td>
+				<td width="6%" class="esf">data5</td>
+				<td width="6%" class="fec">data6</td>
+				<td width="6%" class="mon">data7</td>
+				<td width="6%" class="imp">data8</td>
+				<td width="6%" class="val">data9</td>
+				<td width="5%" class="c31">data10</td>
+				<td width="6%" class="f31">data11</td>
+				<td width="12%" class="ubi">data12</td>
+				<td width="11%" class="res">data13</td>				
+			</tr>		
+	</table>
+		
+EOF;
+	$this->writeHTML($html);
+      /*  foreach($this->datos as $record){
+
+            if($record['nivel'] == 0 || $record['nivel'] == 1){
+                $this->SetFont('','B',6);
+                if($codigo != '' && ($record['nivel'] == 0 || $record['nivel'] == 1) && $cont_87>0){
+
+                    $total_general_87 = $total_general_87 + $cont_87;
+                    $total_general_100 = $total_general_100 + $cont_100;
+                    $total_general_actual = $total_general_actual + $cont_actual;
+                    $this->SetFillColor(224, 235, 255);
+
+                    $this->SetTextColor(0);
+                    $this->tableborders=array('LB','B','B','B','B','B','B','B','B','B','B','B','RB');
+                    $this->tablenumbers=array(0,0,0,0,0,0,2,2,2,0,0,0,0);
+                    $RowArray = array(
+                        's0'  => '',
+                        's1' => '',
+                        's2' => 'Total Parcial Grupo',
+                        's3' => '',
+                        's4' => '',
+                        's5' => '',
+                        's6' => $cont_87,
+                        's7' => $cont_100,
+                        's8' => $cont_actual,
+                        's9' => '',
+                        's10' => '',
+                        's11' => '',
+                        's12' => ''
+                    );
+
+                    $this->MultiRow($RowArray,true,1);
+                    $total_grupo_100 += $cont_100;
+                    $total_grupo_87 += $cont_87;
+                    $total_grupo_actual += $cont_actual;
+                    $cont_100 = 0;
+                    $cont_87 = 0;
+                    $cont_actual = 0;
+                    if($record['nivel'] == 0 && $codigo != $record['codigo_completo']){
+                        $RowArray = array(
+                            's0'  => '',
+                            's1' => '',
+                            's2' => 'Total Final Grupo ('.$codigo.')',
+                            's3' => '',
+                            's4' => '',
+                            's5' => '',
+                            's6' => $total_grupo_87,
+                            's7' => $total_grupo_100,
+                            's8' => $total_grupo_actual,
+                            's9' => '',
+                            's10' => '',
+                            's11' => '',
+                            's12' => ''
+                        );
+                        $this->MultiRow($RowArray,true,1);
+                        $total_grupo_100 = 0;
+                        $total_grupo_87 = 0;
+                        $total_grupo_actual = 0;
+                    }
+                }
+
+
+                $this->SetFillColor(79, 91, 147);
+
+                $this->SetTextColor(0);
+                $this->tableborders=array('LB','B','B','B','B','B','B','B','B','B','B','B','RB');
+                $this->tablenumbers=array(0,0,0,0,0,0,0,0,0,0,0,0,0);
+                $RowArray = array(
+                    's0'  => '',
+                    's1' => $record['codigo_completo'],
+                    's2' => $record['nombre'],
+                    's3' => '',
+                    's4' => '',
+                    's5' => '',
+                    's6' => '',
+                    's7' => '',
+                    's8' => '',
+                    's9' => '',
+                    's10' => '',
+                    's11' => '',
+                    's12' => ''
+                );
+
+                $this->MultiRow($RowArray,true,1);
+                if($record['nivel'] == 0){
+                    $codigo = $record['codigo_completo'];
+                }
+            }else{
+
+                $this->SetFont('','',6);
+                $this->tableborders=array('RLB','RLB','RLB','RLB','RLB','RLB','RLB','RLB','RLB','RLB','RLB','RLB','RLB');
+                $this->tablenumbers=array(0,0,0,0,0,0,2,2,2,0,0,0,0);
+                $RowArray = array(
+                    's0'  => $record['nivel']==2?$i:'',
+                    's1' => $record['nivel']==2?$record['codigo_af']:$record['camino'],
+                    's2' => $record['nivel']==2?$record['denominacion']:$record['nombre'],
+                    's3' => $record['estado'],
+                    's4' => '-',
+                    's5' => $record['fecha_compra'] == '-'?'-':date("d/m/Y",strtotime($record['fecha_compra'])),
+                    's6' => $record['monto_compra_orig'],
+                    's7' => $record['monto_compra_orig_100'] ,
+                    's8' => $record['monto_compra'],
+                    's9' => $record['nro_cbte_asociado'],
+                    's10' => $record['fecha_cbte_asociado'] == '-'?'-':date("d/m/Y",strtotime($record['fecha_cbte_asociado'])),
+                    's11' => $record['ubicacion'],
+                    's12' => $record['responsable']
+                );
+
+                $this->MultiRow($RowArray);
+
+                $i++;
+                $cont_100 += $record['monto_compra_orig_100'];
+                $cont_87  += $record['monto_compra_orig'];
+                $cont_actual  +=  $record['monto_compra'];
+                //$codigo = $record['codigo_completo'];
+            }
+
+        }
+
+        $total_general_87 += $cont_87;
+        $total_general_100 += $cont_100;
+        $total_general_actual += $cont_actual;
+
+        $this->SetFillColor(224, 235, 255);
+        $this->SetTextColor(0);
+        $this->tableborders=array('LB','B','B','B','B','B','B','B','B','B','B','B','RB');
+        $this->tablenumbers=array(0,0,0,0,0,0,2,2,2,0,0,0,0);
+        $RowArray = array(
+            's0'  => '',
+            's1' => '',
+            's2' => 'Total Parcial Grupo',
+            's3' => '',
+            's4' => '',
+            's5' => '',
+            's6' => $cont_87,
+            's7' => $cont_100,
+            's8' => $cont_actual,
+            's9' => '',
+            's10' => '',
+            's11' => '',
+            's12' => ''
+        );
+        $this->MultiRow($RowArray,true,1);
+
+        //Final Grupo
+        $RowArray = array(
+            's0'  => '',
+            's1' => '',
+            's2' => 'Total Final Grupo ('.$codigo.')',
+            's3' => '',
+            's4' => '',
+            's5' => '',
+            's6' => $total_grupo_87+$cont_87,
+            's7' => $total_grupo_100+$cont_100,
+            's8' => $total_grupo_actual+$cont_actual,
+            's9' => '',
+            's10' => '',
+            's11' => '',
+            's12' => ''
+        );
+        $this->MultiRow($RowArray,true,1);
+
+        //$this->SetFillColor(79, 91, 147);
+        $this->tableborders=array('LB','B','B','B','B','B','B','B','B','B','B','B','RB');
+        $this->tablenumbers=array(0,0,0,0,0,0,2,2,2,0,0,0,0);
+        $RowArray = array(
+            's0'  => '',
+            's1' => '',
+            's2' => 'TOTALES AF',
+            's3' => '',
+            's4' => '',
+            's5' => '',
+            's6' => $total_general_87,
+            's7' => $total_general_100,
+            's8' => $total_general_actual,
+            's9' => '',
+            's10' => '',
+            's11' => '',
+            's12' => '',
+        );
+
+        $this->MultiRow($RowArray,true,1);*/
+
+
+    }
+}
+?>
