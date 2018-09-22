@@ -1,0 +1,6 @@
+CREATE FUNCTION pruebas.getfoo(int) RETURNS pruebas.tprueba AS $$
+    SELECT * FROM pruebas.tprueba WHERE id_prueba = $1;
+$$ LANGUAGE SQL;
+
+select *
+from pruebas.getfoo(14)
