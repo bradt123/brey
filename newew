@@ -1,0 +1,146 @@
+	onbutton={
+	 handler:this.onButtonSave,
+	}
+
+	// Funcion guardar del toolbar
+	onButtonSave:function(o){
+	    
+	   
+		var filas=this.store.getModifiedRecords();
+		if(filas.length>0){	
+			
+			if(confirm("Está seguro de guardar los cambios?")){
+					//prepara una matriz para guardar los datos de la grilla
+					var data={};
+					for(var i=0;i<filas.length;i++){
+						 //rac 29/10/11 buscar & para remplazar por su valor codificado
+						 data[i]=filas[i].data;
+						 //captura el numero de fila
+						 data[i]._fila=this.store.indexOf(filas[i])+1
+						 //RCM 12/12/2011: Llamada a función para agregar parámetros
+						this.agregarArgsExtraSubmit(filas[i].data);
+						Ext.apply(data[i],this.argumentExtraSubmit);
+					    //FIN RCM
+						 
+					}
+					Phx.CP.loadingShow();
+			        Ext.Ajax.request({
+			        	// form:this.form.getForm().getEl(),
+			        	url:this.ActSave,
+			        	params:{_tipo:'matriz','row':String(Ext.util.JSON.encode(data))},
+					
+						isUpload:this.fileUpload,
+						success:this.successSaveFileUpload,
+						//argument:this.argumentSave,
+						failure: this.conexionFailure,
+						timeout:this.timeout,
+						scope:this
+			        });
+		  }			
+		}
+	},
+
+----------------------------------
+this.argumentExtraSubmit = {};
+----------------------------------
+
+    getValForm: function() {
+        var resp = {};
+
+        for (var i = 0; i < this.Componentes.length; i++) {
+            var ac = this.Atributos[i];
+            var cmp = this.Componentes[i]
+            //if(ac.form!=false && !this.Componentes[i].disabled){ 
+            var swc = true;
+            if (ac.vista) {
+                swc = false;
+                for (var _p in ac.vista) {
+                    if (this.nombreVista == ac.vista[_p]) {
+                        swc = true;
+                        break;
+                    }
+                }
+            }
+
+            if (ac.form != false && swc) {
+                //rac 12/09/2011
+                var _name = ac.config.name;
+                if (cmp.getValue() != '' && ac.type == 'DateField' && ac.config.format) {
+                    resp[_name] = cmp.getValue().dateFormat(ac.config.format)
+                    } 
+              else {
+              	    if(ac.type == 'ComboBox' && ac.config.rawValueField){
+              	    	resp[_name] =cmp.getValue();
+              	    	if ( cmp.getRawValue()==resp[_name] ){
+              	    		resp[ac.config.rawValueField] = cmp.getRawValue();
+              	    		resp[_name]=null;
+              	    	}
+              	    }
+              	    else{
+              	    	//rac 29/10/2011  codificacion de ampertand para su almacenamiento en base de datos
+                        resp[_name] = cmp.getValue();
+              	    }
+              	     //resp[_name] = String(resp[_name]).replace(/&/g, "%26");
+                    //resp[_name] = encodeURIComponent(encodeURIComponent(resp[_name]));
+                }
+            }
+        }
+
+        //RCM 12/12/2011: Llamada a funciГіn para agregar parametros
+        this.agregarArgsExtraSubmit();
+        this.agregarArgsBaseSubmit();
+        Ext.apply(resp, this.argumentExtraSubmit);
+        Ext.apply(resp, this.argumentBaseSubmit);
+
+        //FIN RCM
+        return resp
+    },
+    -----------
+    argumentSave: {}
+    ------------------
+        // Funcion guardar del formulario
+    onSubmit: function(o, x, force) {
+    	var me = this;
+    	if (me.form.getForm().isValid() || force===true) {
+
+            Phx.CP.loadingShow();
+            // arma json en cadena para enviar al servidor
+            Ext.apply(me.argumentSave, o.argument);
+            if (me.fileUpload) {
+
+                Ext.Ajax.request({
+                    form: me.form.getForm().getEl(),
+                    url: me.ActSave,
+                    params: me.getValForm,
+                    headers: {
+				        'Accept': 'application/json',
+				    },
+				    isUpload: me.fileUpload,
+                    success: me.successSaveFileUpload,
+                    argument: me.argumentSave,
+                    failure: function(r) {
+                        console.log('falla upload', r)
+                        },
+                    timeout: me.timeout,
+                    scope: me
+                })
+
+                } else {
+                	
+
+                Ext.Ajax.request({
+                    url: me.ActSave,
+                    params: me.getValForm,
+                    isUpload: me.fileUpload,
+                    success: me.successSave,
+                    argument: me.argumentSave,
+
+                    failure: me.conexionFailure,
+                    timeout: me.timeout,
+                    scope: me
+                });
+            }
+
+        }
+
+    },
